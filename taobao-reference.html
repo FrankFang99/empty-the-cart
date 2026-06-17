@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>淘宝风格参考页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- 淘宝风格导航栏 -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 py-2">
+            <div class="flex items-center justify-between text-xs text-gray-500">
+                <div class="flex items-center space-x-4">
+                    <span>中国大陆</span>
+                    <span class="text-gray-300">|</span>
+                    <a href="#" class="hover:text-orange-500">亲，请登录</a>
+                    <a href="#" class="hover:text-orange-500">免费注册</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="hover:text-orange-500">我的淘宝</a>
+                    <a href="#" class="hover:text-orange-500 flex items-center">
+                        购物车
+                        <span class="ml-1 bg-orange-500 text-white px-1 rounded text-xs">0</span>
+                    </a>
+                    <a href="#" class="hover:text-orange-500">收藏夹</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 淘宝搜索区域 -->
+    <div class="bg-white py-4 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center gap-8">
+                <div class="text-3xl font-bold text-orange-500">淘</div>
+                <div class="flex-1 max-w-2xl">
+                    <div class="flex border-2 border-orange-500 rounded overflow-hidden">
+                        <input type="text" placeholder="搜索商品" class="flex-1 px-4 py-2.5 outline-none text-sm">
+                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-2.5 font-bold text-sm">搜索</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 分类导航 -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center py-2.5 space-x-6 text-sm">
+                <span class="font-bold text-gray-800">主题市场</span>
+                <a href="#" class="text-gray-600 hover:text-orange-500 font-medium">女装</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500 font-medium">男装</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500 font-medium">数码</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500 font-medium">美妆</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500 font-medium">食品</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主内容区 -->
+    <div class="max-w-6xl mx-auto px-4 py-6">
+        <!-- 商品筛选栏 -->
+        <div class="bg-white p-4 rounded mb-4 flex items-center justify-between border border-gray-200">
+            <div class="flex items-center space-x-4 text-sm">
+                <span class="text-gray-500">排序:</span>
+                <a href="#" class="text-orange-500 font-bold">综合</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500">销量</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500">价格</a>
+                <a href="#" class="text-gray-600 hover:text-orange-500">最新</a>
+            </div>
+            <div class="flex items-center space-x-2 text-sm">
+                <span class="text-gray-500">价格:</span>
+                <input type="text" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm" placeholder="¥">
+                <span class="text-gray-500">-</span>
+                <input type="text" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm" placeholder="¥">
+            </div>
+        </div>
+        
+        <!-- 商品列表 - 淘宝风格 -->
+        <div class="grid grid-cols-5 gap-4">
+            <!-- 商品卡片1 -->
+            <div class="bg-white border border-gray-200 rounded overflow-hidden cursor-pointer hover:border-orange-500 transition-all">
+                <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative flex items-center justify-center">
+                    <span class="text-4xl text-gray-400">iPhone</span>
+                    <span class="absolute top-0 left-0 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-2 py-1 font-bold">-23%</span>
+                </div>
+                <div class="p-3">
+                    <p class="text-sm text-gray-800 line-clamp-2 h-10">Apple iPhone 15 Pro Max 256GB 钛金属 5G手机</p>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-lg font-bold text-orange-500">¥9999</span>
+                        <span class="text-xs text-gray-400 line-through">¥12999</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-xs text-gray-500">
+                        <span>销量 <span class="text-orange-500">12580</span></span>
+                        <span>评价 3580</span>
+                    </div>
+                    <div class="mt-1 text-xs text-gray-500 truncate">Apple官方旗舰店</div>
+                </div>
+            </div>
+            
+            <!-- 商品卡片2 -->
+            <div class="bg-white border border-gray-200 rounded overflow-hidden cursor-pointer hover:border-orange-500 transition-all">
+                <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative flex items-center justify-center">
+                    <span class="text-4xl text-gray-400">Mac</span>
+                    <span class="absolute top-0 left-0 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-2 py-1 font-bold">-12%</span>
+                </div>
+                <div class="p-3">
+                    <p class="text-sm text-gray-800 line-clamp-2 h-10">Apple MacBook Pro 14英寸 M3 Pro芯片 笔记本电脑</p>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-lg font-bold text-orange-500">¥14999</span>
+                        <span class="text-xs text-gray-400 line-through">¥16999</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-xs text-gray-500">
+                        <span>销量 <span class="text-orange-500">5680</span></span>
+                        <span>评价 1234</span>
+                    </div>
+                    <div class="mt-1 text-xs text-gray-500 truncate">Apple官方旗舰店</div>
+                </div>
+            </div>
+            
+            <!-- 商品卡片3 -->
+            <div class="bg-white border border-gray-200 rounded overflow-hidden cursor-pointer hover:border-orange-500 transition-all">
+                <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative flex items-center justify-center">
+                    <span class="text-4xl text-gray-400">AirPods</span>
+                    <span class="absolute top-0 left-0 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-2 py-1 font-bold">-10%</span>
+                </div>
+                <div class="p-3">
+                    <p class="text-sm text-gray-800 line-clamp-2 h-10">Apple AirPods Pro (第二代) 主动降噪无线耳机</p>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-lg font-bold text-orange-500">¥1799</span>
+                        <span class="text-xs text-gray-400 line-through">¥1999</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-xs text-gray-500">
+                        <span>销量 <span class="text-orange-500">25680</span></span>
+                        <span>评价 8965</span>
+                    </div>
+                    <div class="mt-1 text-xs text-gray-500 truncate">Apple官方旗舰店</div>
+                </div>
+            </div>
+            
+            <!-- 商品卡片4 -->
+            <div class="bg-white border border-gray-200 rounded overflow-hidden cursor-pointer hover:border-orange-500 transition-all">
+                <div class="aspect-square bg-gradient-to-br from-pink-100 to-pink-200 relative flex items-center justify-center">
+                    <span class="text-4xl text-pink-400">SK-II</span>
+                    <span class="absolute top-0 left-0 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-2 py-1 font-bold">-11%</span>
+                </div>
+                <div class="p-3">
+                    <p class="text-sm text-gray-800 line-clamp-2 h-10">SK-II神仙水精华护肤精华露 230ml 护肤套装</p>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-lg font-bold text-orange-500">¥1590</span>
+                        <span class="text-xs text-gray-400 line-through">¥1790</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-xs text-gray-500">
+                        <span>销量 <span class="text-orange-500">18680</span></span>
+                        <span>评价 8965</span>
+                    </div>
+                    <div class="mt-1 text-xs text-gray-500 truncate">SK-II官方旗舰店</div>
+                </div>
+            </div>
+            
+            <!-- 商品卡片5 -->
+            <div class="bg-white border border-gray-200 rounded overflow-hidden cursor-pointer hover:border-orange-500 transition-all">
+                <div class="aspect-square bg-gradient-to-br from-red-100 to-red-200 relative flex items-center justify-center">
+                    <span class="text-4xl text-red-400">Nike</span>
+                    <span class="absolute top-0 left-0 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs px-2 py-1 font-bold">-19%</span>
+                </div>
+                <div class="p-3">
+                    <p class="text-sm text-gray-800 line-clamp-2 h-10">Nike Air Jordan 1 Retro High OG 芝加哥配色 运动鞋</p>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-lg font-bold text-orange-500">¥1299</span>
+                        <span class="text-xs text-gray-400 line-through">¥1599</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-xs text-gray-500">
+                        <span>销量 <span class="text-orange-500">5680</span></span>
+                        <span>评价 2345</span>
+                    </div>
+                    <div class="mt-1 text-xs text-gray-500 truncate">Nike官方旗舰店</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="flex justify-center mt-8">
+            <div class="flex items-center space-x-1">
+                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                <button class="px-3 py-1 bg-orange-500 text-white rounded text-sm">1</button>
+                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                <span class="px-2 text-gray-400">...</span>
+                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">100</button>
+                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="bg-gray-100 mt-8 py-4 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-gray-400">
+            <p>© 2024 淘宝风格参考 - 仅供学习参考</p>
+        </div>
+    </div>
+</body>
+</html>
