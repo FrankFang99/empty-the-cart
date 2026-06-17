@@ -112,13 +112,14 @@ const CheckoutSuccess: React.FC<CheckoutSuccessProps> = ({ totalAmount, itemCoun
           className="flex items-center justify-center gap-1 mb-6"
         >
           {[...Array(5)].map((_, i) => (
-            <motion.Star
+            <motion.div
               key={i}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.8 + i * 0.1 }}
-              className="w-6 h-6 text-yellow-400 fill-yellow-400"
-            />
+            >
+              <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+            </motion.div>
           ))}
         </motion.div>
 

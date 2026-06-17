@@ -3,14 +3,32 @@
 @tailwind utilities;
 
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* 全局背景渐变 */
+body {
+  background: linear-gradient(135deg, #fef3f8 0%, #f5f0ff 50%, #f0f9ff 100%);
+  min-height: 100vh;
+}
+
+/* 狂欢节渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, #FF2D92, #9D4EDD, #00D4FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 霓虹发光效果 */
+.neon-glow {
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
 }
 
 /* 自定义滚动条 */
@@ -20,17 +38,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgba(255, 45, 146, 0.1);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to right, #9333ea, #ec4899);
+  background: linear-gradient(to bottom, #FF2D92, #9D4EDD);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to right, #7c3aed, #f472b6);
+  background: linear-gradient(to bottom, #ff6bb5, #c77dff);
 }
 
 /* 文字截断 */
@@ -45,7 +63,7 @@
 * {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-duration: 200ms;
 }
 
 /* 禁用选择 */
@@ -54,20 +72,80 @@
   -webkit-user-select: none;
 }
 
-/* 动画 */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* 卡片悬浮效果 */
+.card-hover {
+  transition: all 0.3s ease;
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.card-hover:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(255, 45, 146, 0.2);
+}
+
+/* 按钮狂欢节样式 */
+.btn-carnival {
+  background: linear-gradient(135deg, #FF2D92, #9D4EDD);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 45, 146, 0.4);
+}
+
+.btn-carnival:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(255, 45, 146, 0.6);
+}
+
+.btn-carnival:active {
+  transform: translateY(0);
+}
+
+/* 狂欢节渐变边框 */
+.border-gradient {
+  position: relative;
+  background: linear-gradient(135deg, #fff, #fff) padding-box,
+              linear-gradient(135deg, #FF2D92, #9D4EDD, #00D4FF) border-box;
+  border: 2px solid transparent;
+  border-radius: 16px;
+}
+
+/* 星星装饰 */
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+/* 彩带飘落动画 */
+@keyframes ribbon-fall {
+  0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* 气泡上升动画 */
+@keyframes bubble-rise {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+}
+
+/* 脉冲光环 */
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 /* 响应式容器 */
 .container-responsive {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
