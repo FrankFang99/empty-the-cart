@@ -94,7 +94,7 @@ function CommentItem({ comment, onLike, onReply }: {
 export default function CommentSection({ productId }: CommentSectionProps) {
   const [newComment, setNewComment] = useState('');
   const [replyTo, setReplyTo] = useState<Comment | null>(null);
-  const { comments, addComment, toggleLike, getProductComments, replyToComment } = useCommentStore();
+  const { addComment, toggleLike, getProductComments, replyToComment } = useCommentStore();
   const { user, isLoggedIn } = useUserStore();
   
   const productComments = getProductComments(productId);

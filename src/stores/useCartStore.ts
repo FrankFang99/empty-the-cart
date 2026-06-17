@@ -83,7 +83,11 @@ export const useCartStore = create<CartState>()(
       }
     }),
     {
-      name: 'dopamine-cart'
+      name: 'dopamine-cart',
+      version: 1,
+      partialize: (state) => ({
+        items: state.items
+      })
     }
   )
 );
