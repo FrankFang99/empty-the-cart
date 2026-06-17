@@ -1,57 +1,85 @@
-# React + TypeScript + Vite
+# 多巴胺购物平台 🛍️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Trae AI创造力大赛 - 生活娱乐赛道参赛作品**
 
-Currently, two official plugins are available:
+体验清空购物车的快感，而不花一分钱！
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 项目简介
 
-## Expanding the ESLint configuration
+这是一个模拟购物平台，灵感来自韩国的多巴胺购物网站趋势，让用户体验购物的快感但不会产生实际费用。旨在帮助购物爱好者释放购物欲望，同时保护个人财务健康。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ 功能特点
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **模拟购物体验** - 完整的购物流程，从浏览商品到清空购物车
+- **SKU图片映射** - 不同规格显示对应产品图片，图文匹配
+- **模拟结算** - 清空购物车体验，不产生实际费用
+- **结算成功画面** - 烟花动画庆祝，增强满足感
+- **头像管理** - 支持上传或随机生成头像
+- **评论互动** - 支持评论、回复和点赞功能
+
+## 🛠️ 技术栈
+
+- React 18 + TypeScript
+- Vite 6
+- Tailwind CSS 3
+- Zustand (状态管理)
+- Framer Motion (动画)
+- React Router (路由)
+- Lucide React (图标)
+
+## 🚀 快速开始
+
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建生产版本
+npm run build
+
+# 部署到GitHub Pages
+npm run deploy
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📁 项目结构
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  extends: [
-    // other configs...
-    // Enable lint rules for React
-    reactX.configs['recommended-typescript'],
-    // Enable lint rules for React DOM
-    reactDom.configs.recommended,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
 ```
+src/
+├── components/          # 组件目录
+│   ├── checkout/       # 结算相关组件
+│   ├── common/         # 通用组件
+│   ├── home/          # 首页组件
+│   └── product/       # 商品相关组件
+├── data/              # 数据文件
+├── pages/             # 页面组件
+├── stores/            # Zustand状态管理
+├── types/             # TypeScript类型定义
+├── hooks/             # 自定义hooks
+└── lib/               # 工具函数
+```
+
+## 📝 原创性声明
+
+本项目为原创作品，参加Trae AI创造力大赛生活娱乐赛道：
+
+- ✅ 所有代码均为原创编写
+- ✅ 未使用任何第三方模板或脚手架生成
+- ✅ 未抄袭任何现有项目或代码库
+- ✅ 使用的图片资源来自公开可用的图片服务（picsum.photos、Trae图片生成API）
+- ✅ 使用的图标来自Lucide React开源图标库
+- ✅ 项目设计灵感来自公开报道的多巴胺购物网站趋势
+
+## 🌐 在线演示
+
+- **访问地址**: https://frankfang99.github.io/empty-the-cart/
+
+## 📄 License
+
+MIT
+
+---
+
+**参赛赛道**: 生活娱乐  
+**项目亮点**: 通过模拟购物体验帮助用户释放购物欲望，同时保护财务健康，是一种创新的数字心理健康工具。
