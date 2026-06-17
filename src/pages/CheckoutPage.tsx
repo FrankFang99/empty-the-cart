@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CreditCard, ShoppingBag, Gift, ArrowRight } from 'lucide-react';
@@ -6,10 +7,17 @@ import { useCartStore } from '../stores/useCartStore';
 import { useUserStore } from '../stores/useUserStore';
 import { Order } from '../types';
 
+const PAYMENT_METHODS = [
+  { id: 'alipay', name: '支付宝', icon: '💳', borderColor: 'blue' },
+  { id: 'wechat', name: '微信支付', icon: '💚', borderColor: 'green' },
+  { id: 'card', name: '银行卡', icon: '💰', borderColor: 'purple' }
+];
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { items, getTotal, clearCart } = useCartStore();
   const { user, isLoggedIn, addOrder } = useUserStore();
+  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
   if (items.length === 0) {
     navigate('/cart');
@@ -17,7 +25,6 @@ export default function CheckoutPage() {
   }
 
   const handlePayment = () => {
-    // 创建订单
     const order: Order = {
       id: `order-${Date.now()}`,
       userId: user?.id || 'guest',
@@ -32,12 +39,11 @@ export default function CheckoutPage() {
       status: 'pending',
       createdAt: new Date()
     };
-    
+
     if (isLoggedIn) {
       addOrder(order);
     }
-    
-    // 清空购物车并跳转到成功页面
+
     clearCart();
     navigate('/success', { state: { order } });
   };
@@ -98,25 +104,31 @@ export default function CheckoutPage() {
           {/* Payment Method */}
           <div className="border rounded-lg p-4 mb-6">
             <h2 className="font-medium text-gray-800 mb-4">支付方式</h2>
-            
+
             <div className="grid grid-cols-3 gap-3">
-              {[
-                { id: 'alipay', name: '支付宝', icon: '💳', color: 'blue' },
-                { id: 'wechat', name: '微信支付', icon: '💚', color: 'green' },
-                { id: 'card', name: '银行卡', icon: '💰', color: 'purple' }
-              ].map((method) => (
-                <motion.button
-                  key={method.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="p-4 rounded-lg border-2 border-purple-500 bg-purple-50 text-center"
-                >
-                  <span className="text-2xl">{method.icon}</span>
-                  <p className="text-sm font-medium mt-2">{method.name}</p>
-                </motion.button>
-              ))}
+              {PAYMENT_METHODS.map((method) => {
+                const isSelected = selectedMethod === method.id;
+                const borderColorClass = isSelected
+                  ? method.borderColor === 'blue' ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500'
+                  : method.borderColor === 'green' ? 'border-green-500 bg-green-50 ring-2 ring-green-500'
+                  : 'border-purple-500 bg-purple-50 ring-2 ring-purple-500'
+                  : 'border-gray-200 bg-white hover:border-gray-300';
+
+                return (
+                  <motion.button
+                    key={method.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedMethod(method.id)}
+                    className={`p-4 rounded-lg border-2 text-center transition-all ${borderColorClass}`}
+                  >
+                    <span className="text-2xl">{method.icon}</span>
+                    <p className={`text-sm font-medium mt-2 ${isSelected ? 'font-bold' : ''}`}>{method.name}</p>
+                  </motion.button>
+                );
+              })}
             </div>
-            
+
             <p className="text-center text-xs text-gray-400 mt-4">
               选择任意支付方式，都不会产生实际扣款
             </p>
@@ -147,10 +159,10 @@ export default function CheckoutPage() {
 
           {/* Pay Button */}
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={!('ontouchstart' in window) ? { scale: 1.02 } : {}}
+            whileTap={{ scale: 0.95 }}
             onClick={handlePayment}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-lg shadow-lg flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-lg shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-transform"
           >
             确认支付（模拟）
             <ArrowRight size={24} />
