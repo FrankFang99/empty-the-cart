@@ -56,6 +56,7 @@ export interface Order {
   userId: string;
   items: OrderItem[];
   totalPrice: number;
+  savedAmount?: number;
   status: 'pending' | 'shipped' | 'delivered' | 'completed';
   createdAt: Date;
 }
@@ -64,6 +65,7 @@ export interface OrderItem {
   productId: string;
   productName: string;
   price: number;
+  originalPrice?: number;
   quantity: number;
   image: string;
 }
