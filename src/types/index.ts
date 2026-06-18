@@ -84,3 +84,36 @@ export interface User {
   avatar: string;
   avatarFile?: string;
 }
+
+// 收藏商品
+export interface FavoriteItem {
+  id: string;
+  productId: string;
+  product: Product;
+  addedAt: Date;
+}
+
+// 成就系统
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlocked: boolean;
+  unlockedAt?: Date;
+  progress: number;
+  target: number;
+}
+
+// 购物统计
+export interface ShoppingStats {
+  totalSaved: number;
+  cartsCleared: number;
+  itemsAdded: number;
+  productsViewed: number;
+  commentsPosted: number;
+  favoritesAdded: number;
+  categoriesExplored: string[];
+  consecutiveDays: number;
+  lastVisitDate: string;
+}

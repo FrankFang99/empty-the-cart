@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { CreditCard, ShoppingBag, Gift, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CreditCard, ShoppingBag, Gift, ArrowRight, Check } from 'lucide-react';
 import Navbar from '../components/common/Navbar';
 import { useCartStore } from '../stores/useCartStore';
 import { useUserStore } from '../stores/useUserStore';
-import { Order } from '../types';
+import { useAchievementStore } from '../stores/useAchievementStore';
+import { Order, OrderItem } from '../types';
 
 const PAYMENT_METHODS = [
   { id: 'alipay', name: '支付宝', icon: '💳', borderColor: 'blue' },
@@ -17,35 +18,66 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { items, getTotal, clearCart } = useCartStore();
   const { user, isLoggedIn, addOrder } = useUserStore();
+  const { incrementCartCleared, addSavedAmount, addCategoryExplored } = useAchievementStore();
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
 
   if (items.length === 0) {
     navigate('/cart');
     return null;
   }
 
+  // 计算节省金额
+  const savedAmount = items.reduce((sum, item) => {
+    return sum + (item.product.originalPrice - (item.price || item.product.price)) * item.quantity;
+  }, 0);
+
   const handlePayment = () => {
+    setIsProcessing(true);
+    setShowAnimation(true);
+
+    // 创建订单
+    const orderItems: OrderItem[] = items.map(item => ({
+      productId: item.productId,
+      productName: item.product.name,
+      price: item.price || item.product.price,
+      originalPrice: item.product.originalPrice,
+      quantity: item.quantity,
+      image: item.product.images[0]
+    }));
+
     const order: Order = {
       id: `order-${Date.now()}`,
       userId: user?.id || 'guest',
-      items: items.map(item => ({
-        productId: item.productId,
-        productName: item.product.name,
-        price: item.product.price,
-        quantity: item.quantity,
-        image: item.product.images[0]
-      })),
+      items: orderItems,
       totalPrice: getTotal(),
-      status: 'pending',
+      savedAmount: savedAmount,
+      status: 'completed',
       createdAt: new Date()
     };
-
+    
+    // 更新成就系统
+    incrementCartCleared();
+    addSavedAmount(savedAmount);
+    
+    // 记录浏览过的分类
+    const categories = [...new Set(items.map(item => item.product.category))];
+    categories.forEach(cat => addCategoryExplored(cat));
+    
+    // 保存订单
     if (isLoggedIn) {
       addOrder(order);
     }
-
+    
+    // 清空购物车
     clearCart();
-    navigate('/success', { state: { order } });
+    
+    // 等待动画完成后跳转
+    setTimeout(() => {
+      setIsProcessing(false);
+      navigate('/success', { state: { order, savedAmount } });
+    }, 2000);
   };
 
   return (

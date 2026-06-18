@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { CheckCircle, ShoppingBag, Home, Receipt, PartyPopper } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, ShoppingBag, Home, Receipt, PartyPopper, Trophy, Star, TrendingUp } from 'lucide-react';
 import Navbar from '../components/common/Navbar';
 import { Order } from '../types';
+import { useAchievementStore } from '../stores/useAchievementStore';
 
 // 烟花粒子动画组件
 function Fireworks() {
@@ -55,6 +56,9 @@ export default function SuccessPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const order = location.state?.order as Order | undefined;
+  const savedAmount = location.state?.savedAmount as number || 0;
+  const { achievements, stats } = useAchievementStore();
+  const [showAchievementPopup, setShowAchievementPopup] = useState(false);
 
   useEffect(() => {
     if (!order) {
@@ -63,6 +67,9 @@ export default function SuccessPage() {
   }, [order, navigate]);
 
   if (!order) return null;
+
+  const unlockedAchievements = achievements.filter(a => a.unlocked);
+  const recentAchievements = unlockedAchievements.slice(-3);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-100 to-pink-100">
