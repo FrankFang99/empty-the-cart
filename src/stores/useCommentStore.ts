@@ -4,12 +4,12 @@ import { Comment } from '../types';
 import { mockComments } from '../data/products';
 
 interface CommentState {
-  // 持久化字段：用户自己添加的评论（不包含 mockComments 基础数据）
   userComments: Comment[];
   addComment: (productId: string, userId: string, userName: string, userAvatar: string, content: string) => void;
   toggleLike: (commentId: string, userId: string) => void;
   getProductComments: (productId: string) => Comment[];
   replyToComment: (parentCommentId: string, productId: string, userId: string, userName: string, userAvatar: string, content: string) => void;
+  getCommentCountByUser: (userId: string) => number;
 }
 
 // 把 mockComments 和 userComments 合并，mock 数据优先用其原始值
@@ -114,6 +114,10 @@ export const useCommentStore = create<CommentState>()(
         return mergeAll(get().userComments)
           .filter(c => c.productId === productId && !c.replyTo)
           .sort((a, b) => b.likesCount - a.likesCount);
+      },
+
+      getCommentCountByUser: (userId) => {
+        return get().userComments.filter(c => c.userId === userId).length;
       }
     }),
     {

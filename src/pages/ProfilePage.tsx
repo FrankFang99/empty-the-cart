@@ -1,23 +1,37 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { User, Edit2, ShoppingBag, Heart, Settings, LogOut, Upload, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { User, Edit2, ShoppingBag, Heart, Settings, LogOut, Upload, X, ArrowLeft, Trash2 } from 'lucide-react';
 import Navbar from '../components/common/Navbar';
+import ProductCard from '../components/common/ProductCard';
 import { useUserStore } from '../stores/useUserStore';
+import { useFavoriteStore } from '../stores/useFavoriteStore';
+import { useCommentStore } from '../stores/useCommentStore';
+import { useAchievementStore } from '../stores/useAchievementStore';
+
+type ViewMode = 'profile' | 'favorites';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user, isLoggedIn, logout, updateUsername, updateAvatar } = useUserStore();
+  const { user, isLoggedIn, logout, updateUsername, updateAvatar, orders } = useUserStore();
+  const { favorites, removeFavorite, isFavorite, getFavoriteCount } = useFavoriteStore();
+  const { getCommentCountByUser } = useCommentStore();
+  const { stats } = useAchievementStore();
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const [showAvatarUpload, setShowAvatarUpload] = useState(false);
   const [previewAvatar, setPreviewAvatar] = useState('');
+  const [viewMode, setViewMode] = useState<ViewMode>('profile');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isLoggedIn) {
     navigate('/login');
     return null;
   }
+
+  const orderCount = orders.length;
+  const favoriteCount = getFavoriteCount();
+  const commentCount = getCommentCountByUser(user?.id || '');
 
   const handleSaveUsername = () => {
     if (newUsername.trim()) {
@@ -133,9 +147,9 @@ export default function ProfilePage() {
           className="grid grid-cols-3 gap-4 mb-6"
         >
           {[
-            { label: '订单数', value: '0', icon: ShoppingBag, color: 'purple' },
-            { label: '收藏数', value: '0', icon: Heart, color: 'pink' },
-            { label: '评论数', value: '0', icon: User, color: 'blue' }
+            { label: '订单数', value: orderCount, icon: ShoppingBag, color: 'purple' },
+            { label: '收藏数', value: favoriteCount, icon: Heart, color: 'pink' },
+            { label: '评论数', value: commentCount, icon: User, color: 'blue' }
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -159,16 +173,16 @@ export default function ProfilePage() {
           className="bg-white rounded-xl shadow"
         >
           {[
-            { icon: ShoppingBag, label: '我的订单', path: '/orders' },
-            { icon: Heart, label: '我的收藏', path: '/' },
-            { icon: Settings, label: '账号设置', path: '/' }
+            { icon: ShoppingBag, label: '我的订单', action: () => navigate('/orders') },
+            { icon: Heart, label: '我的收藏', action: () => setViewMode('favorites') },
+            { icon: Settings, label: '账号设置', action: () => {} }
           ].map((item, index) => (
             <motion.button
               key={item.label}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 + index * 0.05 }}
-              onClick={() => navigate(item.path)}
+              onClick={item.action}
               className="w-full flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b last:border-b-0"
             >
               <item.icon className="text-gray-500" size={20} />
@@ -191,6 +205,67 @@ export default function ProfilePage() {
       </main>
 
       {/* Avatar Upload Modal */}
+      <AnimatePresence mode="wait">
+        {viewMode === 'favorites' && (
+          <motion.div
+            key="favorites"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="bg-white rounded-xl shadow p-4 mb-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={() => setViewMode('profile')}
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+              >
+                <ArrowLeft size={20} />
+                <span>返回</span>
+              </button>
+              <h3 className="text-lg font-bold text-gray-800">我的收藏 ({favoriteCount})</h3>
+              <div className="w-16" />
+            </div>
+
+            {favorites.length === 0 ? (
+              <div className="text-center text-gray-500 py-12">
+                <Heart size={48} className="mx-auto mb-4 text-gray-300" />
+                <p>还没有收藏任何商品</p>
+                <button
+                  onClick={() => {
+                    setViewMode('profile');
+                    navigate('/');
+                  }}
+                  className="mt-4 px-4 py-2 rounded-lg bg-purple-600 text-white"
+                >
+                  去逛逛
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-4">
+                {favorites.map((fav) => (
+                  <motion.div
+                    key={fav.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="relative"
+                  >
+                    <ProductCard product={fav.product} />
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => removeFavorite(fav.productId)}
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-500 hover:text-red-500"
+                    >
+                      <Trash2 size={16} />
+                    </motion.button>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {showAvatarUpload && (
         <motion.div
           initial={{ opacity: 0 }}
