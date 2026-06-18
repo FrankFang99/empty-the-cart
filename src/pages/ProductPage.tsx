@@ -7,6 +7,7 @@ import { getProductById, getProductComments } from '../data/products';
 import { useCartStore } from '../stores/useCartStore';
 import { useUserStore } from '../stores/useUserStore';
 import { useCommentStore } from '../stores/useCommentStore';
+import { useFavoriteStore } from '../stores/useFavoriteStore';
 import CommentSection from '../components/product/CommentSection';
 
 export default function ProductPage() {
@@ -24,6 +25,7 @@ export default function ProductPage() {
   
   const { addItem } = useCartStore();
   const { isLoggedIn, user } = useUserStore();
+  const { addFavorite, removeFavorite, isFavorite } = useFavoriteStore();
 
   if (!product) {
     return (
@@ -68,6 +70,12 @@ export default function ProductPage() {
     setSelectedSpecs(defaultSpecs);
   }, [product]);
 
+  useEffect(() => {
+    if (product) {
+      setIsFavorited(isFavorite(product.id));
+    }
+  }, [product, isFavorite]);
+
   const handleAddToCart = () => {
     const specs: Record<string, string> = {};
     product.specs.forEach(spec => {
@@ -91,6 +99,11 @@ export default function ProductPage() {
     if (!isLoggedIn) {
       alert('请先登录！');
       return;
+    }
+    if (isFavorited) {
+      removeFavorite(product.id);
+    } else {
+      addFavorite(product);
     }
     setIsFavorited(!isFavorited);
   };
