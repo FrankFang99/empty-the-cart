@@ -5,6 +5,8 @@ import { mockComments } from '../data/products';
 
 interface CommentState {
   userComments: Comment[];
+  likedCommentIds: string[];
+  likeIncrements: Record<string, number>;
   addComment: (productId: string, userId: string, userName: string, userAvatar: string, content: string) => void;
   toggleLike: (commentId: string, userId: string) => void;
   getProductComments: (productId: string) => Comment[];
@@ -37,6 +39,8 @@ export const useCommentStore = create<CommentState>()(
   persist(
     (set, get) => ({
       userComments: [],
+      likedCommentIds: [],
+      likeIncrements: {},
 
       addComment: (productId, userId, userName, userAvatar, content) => {
         const newComment: Comment = {
@@ -54,26 +58,22 @@ export const useCommentStore = create<CommentState>()(
       },
 
       toggleLike: (commentId, userId) => {
-        const updateLikes = (comments: Comment[]): Comment[] => {
-          return comments.map(comment => {
-            if (comment.id === commentId) {
-              const isLiked = comment.isLiked;
-              return {
-                ...comment,
-                likesCount: isLiked ? comment.likesCount - 1 : comment.likesCount + 1,
-                isLiked: !isLiked
-              };
-            }
-            if (comment.replies) {
-              return {
-                ...comment,
-                replies: updateLikes(comment.replies)
-              };
-            }
-            return comment;
-          });
-        };
-        set({ userComments: updateLikes(get().userComments) });
+        const { likedCommentIds, likeIncrements } = get();
+        const isLiked = likedCommentIds.includes(commentId);
+        
+        const newLikedIds = isLiked 
+          ? likedCommentIds.filter(id => id !== commentId)
+          : [...likedCommentIds, commentId];
+
+        const increment = likeIncrements[commentId] || 0;
+        const newIncrement = isLiked ? increment - 1 : increment + 1;
+
+        const newIncrements = { ...likeIncrements, [commentId]: newIncrement };
+
+        set({ 
+          likedCommentIds: newLikedIds,
+          likeIncrements: newIncrements
+        });
       },
 
       replyToComment: (parentCommentId, productId, userId, userName, userAvatar, content) => {
@@ -111,7 +111,19 @@ export const useCommentStore = create<CommentState>()(
       },
 
       getProductComments: (productId) => {
-        return mergeAll(get().userComments)
+        const { likedCommentIds, likeIncrements } = get();
+        const allComments = mergeAll(get().userComments);
+        
+        const addIsLikedFlag = (comments: Comment[]): Comment[] => {
+          return comments.map(comment => ({
+            ...comment,
+            likesCount: comment.likesCount + (likeIncrements[comment.id] || 0),
+            isLiked: likedCommentIds.includes(comment.id),
+            replies: comment.replies ? addIsLikedFlag(comment.replies) : undefined
+          }));
+        };
+
+        return addIsLikedFlag(allComments)
           .filter(c => c.productId === productId && !c.replyTo)
           .sort((a, b) => b.likesCount - a.likesCount);
       },
@@ -123,14 +135,20 @@ export const useCommentStore = create<CommentState>()(
     {
       name: 'dopamine-comments',
       version: 2,
-      // 只持久化用户自己添加的评论，mock 数据始终来自代码
       partialize: (state) => ({
-        userComments: state.userComments
+        userComments: state.userComments,
+        likedCommentIds: state.likedCommentIds,
+        likeIncrements: state.likeIncrements
       }),
-      // 加载时把字符串 createdAt 转回 Date
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.userComments = state.userComments.map(reviveComment);
+          if (!state.likedCommentIds) {
+            state.likedCommentIds = [];
+          }
+          if (!state.likeIncrements) {
+            state.likeIncrements = {};
+          }
         }
       }
     }
